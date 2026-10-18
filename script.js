@@ -164,3 +164,139 @@ buttons.forEach(btn => {
 document.body.classList.add('season-spring');
 bgLayer.style.backgroundImage = "url('002.PNG')";
 render('shouxihu');
+(function () {
+  const canvas = document.getElementById('fireworks');
+  const ctx = canvas.getContext('2d');
+  let W, H, dpr;
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const PALETTE = [
+    ['#ff4d4f', '#ffd666'],
+    ['#d4af37', '#fff1b8'],
+    ['#36cfc9', '#b7eb8f'],
+    ['#ff7a45', '#ffe58f'],
+    ['#ad8b00', '#fffbe6']
+  ];
+
+  const rockets = [];
+  const particles = [];
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  class Rocket {
+    constructor(targetX, targetY) {
+      this.x = targetX + rand(-30, 30);
+      this.y = window.innerHeight;
+      this.tx = targetX;
+      this.ty = targetY;
+      this.vy = rand(-11, -9);
+      this.vx = (this.tx - this.x) / 40;
+      this.color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vy += 0.18;
+      particles.push(new Spark(this.x, this.y, this.color[0], true));
+      if (this.vy >= 0 || this.y <= this.ty) {
+        explode(this.x, this.y, this.color);
+        return false;
+      }
+      return true;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = this.color[0];
+      ctx.fill();
+    }
+  }
+
+  class Spark {
+    constructor(x, y, color, trail) {
+      this.x = x;
+      this.y = y;
+      const a = Math.random() * Math.PI * 2;
+      const s = trail ? rand(0.5, 1.5) : rand(2, 7);
+      this.vx = Math.cos(a) * s;
+      this.vy = Math.sin(a) * s;
+      this.life = 1;
+      this.decay = trail ? 0.08 : rand(0.012, 0.025);
+      this.color = color;
+      this.size = trail ? 1 : rand(1.5, 3);
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vy += 0.045;
+      this.vx *= 0.97;
+      this.vy *= 0.97;
+      this.life -= this.decay;
+      return this.life > 0;
+    }
+    draw() {
+      ctx.globalAlpha = Math.max(this.life, 0);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function explode(x, y, color) {
+    const n = 70 + Math.floor(Math.random() * 40);
+    for (let i = 0; i < n; i++) {
+      const p = new Spark(x, y, Math.random() > 0.5 ? color[0] : color[1]);
+      particles.push(p);
+    }
+  }
+
+  function launch() {
+    const x = rand(W * 0.2, W * 0.8);
+    const y = rand(H * 0.15, H * 0.45);
+    rockets.push(new Rocket(x, y));
+  }
+
+  window.addEventListener('click', (e) => {
+    rockets.push(new Rocket(e.clientX, e.clientY));
+  });
+
+  let nextLaunch = 0;
+  function loop(t) {
+    ctx.fillStyle = 'rgba(20, 16, 12, 0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    if (t > nextLaunch) {
+      launch();
+      nextLaunch = t + rand(1600, 3000);
+    }
+
+    for (let i = rockets.length - 1; i >= 0; i--) {
+      const r = rockets[i];
+      r.draw();
+      if (!r.update()) rockets.splice(i, 1);
+    }
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.draw();
+      if (!p.update()) particles.splice(i, 1);
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
