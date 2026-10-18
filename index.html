@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>烟花三月下扬州 · 国风景点册</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 背景层（JS动态切换） -->
+  <div class="bg-layer" id="bg-layer"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- 花瓣 -->
+  <div class="petals" id="petals"></div>
+
+  <div class="paper">
+    <!-- 卷轴上轴 -->
+    <div class="scroll-top"></div>
+
+    <header class="banner">
+      <div class="banner-mask">
+        <div class="banner-decor left">❦</div>
+        <div class="banner-text">
+          <h1>烟花三月下扬州</h1>
+          <p class="subtitle">—— 一城山水半城园 ——</p>
+          <div class="divider">
+            <span></span><em>扬</em><span></span>
+          </div>
+          <p class="spots-line">瘦西湖 · 个园 · 何园 · 大明寺 · 东关街</p>
+        </div>
+        <div class="banner-decor right">❦</div>
+      </div>
+      <div class="ink-overlay"></div>
+    </header>
+
+    <main class="layout">
+      <!-- 竖排装饰 -->
+      <div class="vertical-title">
+        <span>淮</span><span>左</span><span>名</span><span>都</span><span>·</span><span>竹</span><span>西</span><span>佳</span><span>处</span>
+      </div>
+
+      <!-- 左侧菜单 -->
+      <nav class="menu">
+        <div class="menu-title">游 · 览 · 指 · 引</div>
+        <button class="spot-btn active" data-id="shouxihu">
+          <span class="btn-num">壹</span>
+          <span class="btn-text">瘦西湖</span>
+          <span class="btn-tag">湖上园林</span>
+        </button>
+        <button class="spot-btn" data-id="geyuan">
+          <span class="btn-num">贰</span>
+          <span class="btn-text">个园</span>
+          <span class="btn-tag">四季假山</span>
+        </button>
+        <button class="spot-btn" data-id="heyuan">
+          <span class="btn-num">叁</span>
+          <span class="btn-text">何园</span>
+          <span class="btn-tag">晚清第一园</span>
+        </button>
+        <button class="spot-btn" data-id="daming">
+          <span class="btn-num">肆</span>
+          <span class="btn-text">大明寺</span>
+          <span class="btn-tag">鉴真道场</span>
+        </button>
+        <button class="spot-btn" data-id="dongguan">
+          <span class="btn-num">伍</span>
+          <span class="btn-text">东关街</span>
+          <span class="btn-tag">市井烟火</span>
+        </button>
+      </nav>
+
+      <!-- 展示区 -->
+      <section class="show" id="show">
+        <div class="photo-wrapper">
+          <div class="photo-frame">
+            <div class="photo">
+              <img id="spot-img" src="" alt="扬州景点" />
+              <div class="photo-ink"></div>
+            </div>
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+          </div>
+          <div class="poem-box">
+            <div class="poem" id="spot-poem"></div>
+            <div class="poem-author" id="spot-poem-author"></div>
+          </div>
+        </div>
+
+        <div class="info" id="info">
+          <div class="info-header">
+            <h2 id="spot-name">瘦西湖</h2>
+            <div class="seal">扬州</div>
+          </div>
+          <div class="red-thread"></div>
+          <p id="spot-desc"></p>
+          <ul id="spot-features"></ul>
+          <div class="addr-box">
+            <span class="addr-icon">📍</span>
+            <span class="addr" id="spot-addr"></span>
+          </div>
+          <div class="bookmark"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 卷轴下轴 -->
+    <div class="scroll-bottom"></div>
+
+    <footer>
+      <div class="footer-inner">
+        <span class="footer-left">——</span>
+        <span class="footer-text">江南烟雨 · 扬州慢 &nbsp;|&nbsp; 一城山水半城园</span>
+        <span class="footer-right">——</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
